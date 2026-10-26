@@ -14,10 +14,10 @@ jobs:
 
     steps:
       - name: Baixar projeto
-        uses: actions/checkout@v7
+        uses: actions/checkout@v4
 
       - name: Configurar Python
-        uses: actions/setup-python@v7
+        uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
@@ -25,10 +25,12 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-            git zip unzip openjdk-17-jdk python3-pip \
-            autoconf libtool pkg-config zlib1g-dev \
-            libncurses5-dev libncursesw5-dev libtinfo6 \
-            cmake libffi-dev libssl-dev automake autopoint gettext
+            git zip unzip openjdk-17-jdk \
+            build-essential python3-dev \
+            autoconf libtool pkg-config \
+            zlib1g-dev libncurses-dev \
+            cmake libffi-dev libssl-dev \
+            automake autopoint gettext
 
       - name: Instalar Buildozer
         run: |
@@ -39,9 +41,9 @@ jobs:
         run: buildozer -v android debug
 
       - name: Disponibilizar APK
-        uses: actions/upload-artifact@v7
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: Magos-do-Infinito-APK
           path: bin/*.apk
           if-no-files-found: error
-          
